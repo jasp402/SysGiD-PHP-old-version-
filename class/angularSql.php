@@ -1,7 +1,7 @@
 <?php
 session_start(); 
 error_reporting (0);
-require 'database.php';
+require 'database.local.php';
 
 
 if(isset($request->inciarSesion)){ 
