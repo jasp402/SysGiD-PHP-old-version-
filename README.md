@@ -1,5 +1,5 @@
 # SysGiD
-Sistema de Gestión Integral de Datos
+*Sistema de Gestión Integral de Datos*
 
 
 *SysGiD* se presenta como una ERP. (Enterprise Resource Planning), lo que es igual un Sistema de Panificación de Recursos Empresarial. Capaz de manejar los diversos modelos de negocios de una compañía asociados con las operaciones de producción y los aspectos de distribución.  
