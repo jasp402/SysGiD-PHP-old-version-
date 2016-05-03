@@ -1,12 +1,5 @@
 <?php
 
-/*----------> Acceso al MySQL <---------*/
-//////////////////////////////////////////
-// usuario:   gunuwebn                  //
-// password:  1z2x3c4v5b+-*/            //
-// Ruta:      http://gunuweb.net:2082/  //
-//////////////////////////////////////////
-
 date_default_timezone_set('America/Caracas');
 $JSON       = file_get_contents("php://input");
 $request    = json_decode($JSON);
@@ -16,7 +9,7 @@ function getConnection() {
                     $dbuser="sysgidco_root";  //
                     $dbpass="5o%UH6r7#w.g";
                     $dbname="sysgidco_uniprint"; //
-                    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);          
+                    $dbh = new PDO("mysql:host=localhost;dbname=sysgidco_uniprint",'sysgidco_root','5o%UH6r7#w.g');          
                     $dbh -> exec("set names utf8");
                     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     return $dbh;
