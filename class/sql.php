@@ -1,5 +1,4 @@
 <?php
-
 date_default_timezone_set('America/Caracas');
 $JSON       = file_get_contents("php://input");
 $request    = json_decode($JSON);
