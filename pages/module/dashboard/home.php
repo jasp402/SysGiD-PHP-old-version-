@@ -15,7 +15,6 @@
             <li class="active">Panel de Control</li>
           </ol>
         </section>
-
         <!-- Main content -->
         <section class="content">
           <!-- Small boxes (Stat box) -->
@@ -74,7 +73,6 @@
                 </div><!-- /.info-box -->
               </div><!-- /.col -->
             </a>
-
 <!-- [Widgets Transportistas] -->
               <div class="col-md-4 col-sm-6 col-xs-12" ng-init="WidgetsTransporte()">
                 <div class="info-box bg-teal">
@@ -98,93 +96,7 @@
                 </div><!-- /.info-box -->
               </div><!-- /.col -->
             </a>
-<!-- [Widgets Pedidos] -->
-              <div class="col-md-4 col-sm-6 col-xs-12" ng-init="WidgetsPedidos(); listarPedidos()">
-                <div class="info-box bg-yellow">
-                <a href="#/pedidos" style="color:#fff"> 
-                  <span class="info-box-icon"><div class="icon"><i class="fa fa-file-text-o"></i></div></span>
-                  </a>
-                  <div class="info-box-content">                              
-                   <a href="#/pedidos" style="color:#fff"  data-toggle="tooltip" title="Total pedidos registrados"> 
-                      <span class="info-box-text"><b>Modulo Pedidos</b></span>
-                      <span class="info-box-number">{{ListarPedidos.length}} <small class="lead">Pedidos Registrados</small></span>
-                    </a>
-                    <div class="progress">
-                      <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="progress-description">
-                      <span class="progress-description">
-                      <small data-toggle="tooltip" title="{{getReporte_productos[0]}} - Registros en {{fechaAnterir | date:'MMMM'}}"  data-Placement='bottom'>
-                      <span class="small lead">  <i class="fa fa-caret-left"></i>  {{getReporte_pedidos[0]}} - {{fechaAnterir | date:"MMMM"}}  </span>
-                      </small>
-                       <small data-toggle="tooltip" title="{{getReporte_productos[1]}} - Registros mes actual"  data-Placement='bottom'>
-                      |  <span class="small lead"><i class="fa fa-caret-down"></i> {{getReporte_pedidos[1]}} - {{ fecha | date:"MMMM"}}</span>
-                      </small>
-                    </span>
-                      </small>
-                    </span>
-                  </div><!-- /.info-box-content -->
-                </div><!-- /.info-box -->
-              </div><!-- /.col -->
-            </a>
-<!-- [Widgets Facturación] -->
-              <div class="col-md-4 col-sm-6 col-xs-12" ng-init="WidgetsFacturacion(); factPagas()">
-                <div class="info-box bg-blue">
-                <a href="#/facturacion" style="color:#fff"> 
-                  <span class="info-box-icon"><div class="icon"><i class="fa fa-money"></i></div></span>
-                  </a>
-                  <div class="info-box-content">                              
-                   <a href="#/facturacion" style="color:#fff"  data-toggle="tooltip" title="Total facturas registradas"> 
-                      <span class="info-box-text"><b>Modulo Facturación</b></span>
-                      <span class="info-box-number">{{FactPagas.length}} <small class="lead">facturas registradas</small></span>
-                    </a>
-                    <div class="progress">
-                      <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="progress-description">
-                      <span class="progress-description">
-                      <small data-toggle="tooltip" title="{{getReporte_productos[0]}} - Registros en {{fechaAnterir | date:'MMMM'}}"  data-Placement='bottom'>
-                      <span class="small lead">  <i class="fa fa-caret-left"></i>  {{getReporte_factura[0]}} - {{fechaAnterir | date:"MMMM"}}  </span>
-                      </small>
-                       <small data-toggle="tooltip" title="{{getReporte_productos[1]}} - Registros mes actual"  data-Placement='bottom'>
-                      |  <span class="small lead"><i class="fa fa-caret-down"></i> {{getReporte_factura[1]}} - {{ fecha | date:"MMMM"}}</span>
-                      </small>
-                    </span>
-                      </small>
-                    </span>
-                  </div><!-- /.info-box-content -->
-                </div><!-- /.info-box -->
-              </div><!-- /.col -->
-            </a>
-<!-- [Widgets Facturación] -->
-              <div class="col-md-4 col-sm-6 col-xs-12" ng-init="WidgetsRemision(); listarRemision()">
-                <div class="info-box bg-purple disabled">
-                <a href="#/facturacion" style="color:#fff"> 
-                  <span class="info-box-icon"><div class="icon"><i class="fa fa-map-signs"></i></div></span>
-                  </a>
-                  <div class="info-box-content">                              
-                   <a href="#/facturacion" style="color:#fff"  data-toggle="tooltip" title="Total Remisiones registradas"> 
-                      <span class="info-box-text"><b>Modulo Remisión</b></span>
-                      <span class="info-box-number">{{ListarRemision.length}} <small class="lead">Remisiones registradas</small></span>
-                    </a>
-                    <div class="progress">
-                      <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="progress-description">
-                      <span class="progress-description">
-                      <small data-toggle="tooltip" title="{{getReporte_productos[0]}} - Registros en {{fechaAnterir | date:'MMMM'}}"  data-Placement='bottom'>
-                      <span class="small lead">  <i class="fa fa-caret-left"></i>  {{getReporte_remision[0]}} - {{fechaAnterir | date:"MMMM"}}  </span>
-                      </small>
-                       <small data-toggle="tooltip" title="{{getReporte_productos[1]}} - Registros mes actual"  data-Placement='bottom'>
-                      |  <span class="small lead"><i class="fa fa-caret-down"></i> {{getReporte_remision[1]}} - {{ fecha | date:"MMMM"}}</span>
-                      </small>
-                    </span>
-                      </small>
-                    </span>
-                  </div><!-- /.info-box-content -->
-                </div><!-- /.info-box -->
-              </div><!-- /.col -->
-            </a><!-- Main row -->
+
             <!-- Left col -->
 <div class="col-md-8">
               <div class="box" ng-controller="ngControlChars" ng-init="GraficaGeneral()">

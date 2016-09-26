@@ -1,5 +1,5 @@
 <?php
-require 'sql.php';
+require 'database.php';
 
 if(isset($request->inciarSesion)){ 
 session_start();    

@@ -1,47 +1,78 @@
 //-----------------------------------------------------------------------------CONTROL TRANSPORTE
-app.controller('ngControlTransporte', function(public,query,Factory, SQLGlobal, $scope, $http, $location, $routeParams, $timeout,$filter, sweet, AlertGlobal){ // $scope.chart = CharsGlobal;
-  $scope.public   = public;
-  $scope.alert    = AlertGlobal;
-  $scope.SQL      = SQLGlobal;
+app.controller('ngControlTransporte', function(SQL,ClearForm, public, SQLGlobal, $scope, $timeout, AlertGlobal){ // $scope.chart = CharsGlobal;
 
-  $scope.alert.bienvenida('Transporte','¡Porfavor No desespere!'); 
-  $scope.public.ngClassBody = 'skin-blue sidebar-mini sidebar-open sidebar-collapse';
-  $scope.public.ngTitle = 'SysGiD | Productos'; 
+    //Basic Config
+    AlertGlobal.bienvenida('Transporte','¡Porfavor No desespere!');
+    public.ngClassBody = 'skin-blue sidebar-mini sidebar-open sidebar-collapse';
+    public.ngTitle = 'SysGiD | Productos';
 
-//LA TABLA sUBMODULO DEBERIA TENER UN CAPO DE DESCRIPCION PARA USARLO EN LA PARTE INFERIOR DE LOS BOTONES
-   $scope.cambiarVista =function(value){
-  $scope.public.ngVista = value; 
-  }
+    //Preload SideBar
+    $scope.SQL      = SQLGlobal;
+
+    //Constantes
+    $scope.fdata    = {};
+    $scope.noItem   = [];
+
+
+
+    //View
+    $scope.cambiarVista =function(value){
+        public.ngVista = value;
+    };
+
+    $scope.autoComplet = function (data) {
+        $scope.fdata.id_empresa_transporte = data.id_empresa_transporte;
+        $scope.noItem.SearchForm = data.razon_social;
+        $scope.successInput = true;
+        $scope.blocked = true;
+    };
+
+    $scope.removeSearch = function () {
+        $scope.successInput = false;
+        $scope.fdata.id_empresa_transporte = '';
+        $scope.noItem.SearchForm = '';
+    };
 
 //---------------------------------Transporte---------------------------------------------------------
 
-$scope.RegEmpresaTransporte = function(fdata){
-$scope.success = true;
-//console.log(fdata);
-$http.post("class/angularSql.php", {RegEmpresaTransporte:fdata}).success(function(data){
-  $timeout(function(){ $scope.success = false }, 5000);
+    $scope.RegEmpresaTransporte = function(fdata){
+        SQL.INSERT('transporte_empresas',fdata);
+        AlertGlobal.success('¡Registro exitoso!',fdata['razon_social']);
+        ClearForm.easyFrom(fdata);
+        $scope.listarET();
+    };
+
+    $scope.RegChofer = function (fdata) {
+        SQL.INSERT('transporte_chofer',fdata);
+        AlertGlobal.success('¡Registro exitoso!',fdata.nombre+' '+fdata.apellido);
+        $scope.removeSearch();
+        ClearForm.easyFrom(fdata);
+    };
+
+    $scope.RegVehiculo = function(fdata){
+        SQL.INSERT('transporte_vehiculos',fdata);
+        AlertGlobal.success('¡Registro exitoso!',fdata.marca+' '+fdata.modelo);
+        $scope.removeSearch();
+        ClearForm.easyFrom(fdata);
+    };
+
+    $scope.consult = function () {
+        $scope.where = [{'estatus':'a'}];
+        SQL.SELECT('*', 'transporte_empresas', $scope.where).then(function (promise) {
+            $scope.listarET = promise;
+            return $scope.listarET;
+        });
+        SQL.SELECT('*', 'transporte_chofer', $scope.where).then(function (promise) {
+            $scope.listarT = promise;
+            return $scope.listarT;
+        });
+        SQL.SELECT('*', 'transporte_vehiculos', $scope.where).then(function (promise) {
+            $scope.listarV = promise;
+            return $scope.listarV;
+        });
+    };
+
+    $scope.consult();
+
 });
-$scope.fdata = '';
-}
 
-
-
-$scope.RegTransporte = function(fdata){
-fdata.T_idempresa_transporte = fdata.T_idempresa_transporte.idempresa_transporte;
-$http.post("class/angularSql.php", {RegTransporte:fdata}).success(function(data){
-  $timeout(function(){ $scope.alert.success('¡Registro exitoso!','Trasnportista Registrado'); }, 5000);
-});
-$scope.fdata = '';
-}
-
-
-
-$scope.listarET = function(){$http.post("class/angularSql.php", {listarET:''}).success(function(data){$scope.ListrarTablaET = data});}
-$scope.listarT = function(){$http.post("class/angularSql.php", {listarT:''}).success(function(data){$scope.ListrarTablaT = data});}
-//$scope.listarT();
-//$scope.listarET();
-
-$scope.log = function(value){
-   console.log(value.idempresa_transporte); 
-}  
-})

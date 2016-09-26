@@ -178,17 +178,19 @@
                     <form class="form-horizontal" ng-submit="RegProducto(fdata)">
                     <div class="form-group">
                         <label for="inputExperience" class="col-sm-2 control-label">Tipo de Producto /  Categoria de producto</label>
+                        <div class="col-sm-5">
+                            <select class="form-control"   ng-model="fdata.categoria" ng-options="categoria.nombre for categoria in ListrarCategoria"  required>
+                                <option value="" Disabled>- Cagoria de Cagoria -</option>
+                            </select>
+                        </div>
+
                         <div class="col-sm-4">
-                          <select class="form-control" ng-model="fdata.Tipo" ng-options="tipo.nombre for tipo in ListrarTipoProd"  required>
+                          <select class="form-control" ng-model="fdata.Tipo" ng-options="tipo.nombre+' - '+tipo.descipcion  for tipo in ListrarTipoProd"  required>
                             <option value="" Disabled>- Tipo de Producto -</option>
                           </select>
                         </div>
 
-                        <div class="col-sm-5">
-                          <select class="form-control"   ng-model="fdata.categoria" ng-options="categoria.nombre for categoria in ListrarCategoria"  required>
-                            <option value="" Disabled>- Cagoria de Cagoria -</option>
-                          </select>
-                        </div>
+
                     </div>
 
 
@@ -334,13 +336,7 @@
 
 
 <div ng-switch-when="Registrar Categorias de Productos" class="active tab-pane" id="activity"><!-- tab-panel Registrar Usario -->
-                  
-                  <div class="col-sm-12 box-header">
-                  <br>
-                    <i class="fa fa-edit"></i>
-                    <h3 class="box-title">{{public.ngVista}}</h3><hr>
-                  </div>
-                    
+
                     <form class="form-horizontal" ng-submit="RegInventario(fdata)">
                       <div class="form-group">
                        <label for="inputExperience" class="col-sm-2 control-label">Nueva Categoria</label> 
@@ -394,67 +390,39 @@
                     <i class="fa fa-edit"></i>
                     <h3 class="box-title">Listar Productos</h3>
                   </div>
-                  
-                    <tbody>
-                    <tr>
-                  <th>#</th>
-                      <th style="width: 10px">Cod.</th>
-                      <th ng-click="sortType = 'producto[12]'; sortReverse = !sortReverse"><a href="">Tipo de Producto</a></th>
-                      <th ng-click="sortType = 'producto[10]'; sortReverse = !sortReverse"><a href="">Categoria</a></th>
-                      <th ng-click="sortType = 'producto[2]'; sortReverse = !sortReverse"><a href="">Nombre de Producto</a></th>
-                      <th ng-click="sortType = 'producto[3]'; sortReverse = !sortReverse"><a href="">Tamaño (Mtrs)</a></th>
-                 <!--     <th ng-click="sortType = 'producto[4]'; sortReverse = !sortReverse"><a href="">Color</a></th> -->
-                      <th ng-click="sortType = 'producto.disponible'; sortReverse = !sortReverse"><a href="">Stock</a></th>
-                      <th ng-click="sortType = 'producto[5]'; sortReverse = !sortReverse"><a href="">Precio (/S)</a></th>
-                      <th>Funciones</th>
+                      <tbody>
+                      <tr>
+                          <th>#</th>
+                          <th style="width: 10px">Codigo</th>
+                          <th ng-click="sortType = 'producto[10]'; sortReverse = !sortReverse"><a href="">Categoria</a></th>
+                          <th ng-click="sortType = 'producto[12]'; sortReverse = !sortReverse"><a href="">Tipo de Producto</a></th>
+                          <th ng-click="sortType = 'producto[2]'; sortReverse = !sortReverse"><a href="">Nombre de Producto</a></th>
+                          <th ng-click="sortType = 'producto.disponible'; sortReverse = !sortReverse"><a href="">Stock</a></th>
+                          <th>Funciones</th>
 
-                    </tr>
-             <!--         <tr ng-if="edit">
-                      <th style="width: 10px">Cod.</th>
-                      <th ng-click="sortType = 'producto[12]'; sortReverse = !sortReverse"><a href="">Tipo de Producto</a></th>
-                      <th ng-click="sortType = 'producto[10]'; sortReverse = !sortReverse"><a href="">Categoria</a></th>
-                      <th ng-click="sortType = 'producto[2]'; sortReverse = !sortReverse"><a href="">Nombre de Producto</a></th>
-                      <th ng-click="sortType = 'producto[3]'; sortReverse = !sortReverse"><a href="">Tamaño (Mtrs)</a></th>
-                      <th ng-click="sortType = 'producto[4]'; sortReverse = !sortReverse"><a href="">Color</a></th>
-                      
-                      <th ng-click="sortType = 'producto[4]'; sortReverse = !sortReverse">><a href="">Disponible</a></th>
-                      <th ><a href="">Precio (/S)</a></th>
-                      <th>Funciones</th>
+                      </tr>
+                      <tr ng-repeat="producto in ListarProductos | orderBy:sortType:sortReverse" class='small small'>
+                          <td>{{$index+1}}</td>
+                          <td>{{producto.cod_producto}}</td>
+                          <td>{{producto[11]}}</td>
+                          <td ><b>{{producto[14]}}</b></td>
+                          <td>{{producto.nombre_producto}}</td>
+     <td ng-if="edit && indexProduct == $index"><input type="text" placeholder="{{producto.color}}" ng-model="new.color"></td>
+                          <td ng-hide="edit && indexProduct == $index">{{producto.disponible}} Und.</td>
+                          <td ng-if="edit && indexProduct == $index"><input type="text" placeholder="{{producto.disponible}}" ng-model="new.disponible"></td>
+                          <td ng-if="!edit" align="center">
+                              <a href="" data-toggle="tooltip" data-original-title="Modificar Productos" ng-click="EditarProducto(producto.id_producto, $index)" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp;
+                              <a href="" data-toggle="tooltip" data-original-title="Eliminar de forma permanentemente este Productos"   ng-click="EliminarProducto(producto.id_producto)" class="glyphicon glyphicon-trash"></a>
+                              <a ng-if="edit"  href=""  ng-click="EditarProducto(producto.id_producto, $index)" class="glyphicon glyphicon-edit"></a>
+                          </td>
 
-                    </tr>
-                  <tr> <th colspan="9" class="bg-green color-palette text text-center">Usuarios Activos</th> </tr>-->
-                    <tr ng-repeat="producto in ListarProductos | orderBy:sortType:sortReverse" class='small small'>
-                  <td>{{$index+1}}</td> 
-                  
-                      <td>{{producto.cod_producto}}</td>
+                          <td ng-if="edit" ng-show="indexProduct == $index" align="center">
+                              <a href="" class="btn btn-sm btn-info btn-flat pull-left" ng-click="ActualizarProducto(producto,new)">Guardar</a>
 
-                      <td ><b>{{producto[14]}}</b></td>
-                      
-                      <td>{{producto[11]}}</td>
+                      </tr>
 
-                      <td>{{producto.nombre_producto}}</td>
+                      </tbody>
 
-                      <td>{{producto.medida}} Mts.</td>
-
-                  <!--    <td ng-hide="edit && indexProduct == $index">{{producto.color}}</td> 
-<td ng-if="edit && indexProduct == $index"><input type="text" placeholder="{{producto.color}}" ng-model="new.color"></td>-->
-                      <td ng-hide="edit && indexProduct == $index">{{producto.disponible}} Und.</td>
-<td ng-if="edit && indexProduct == $index"><input type="text" placeholder="{{producto.disponible}}" ng-model="new.disponible"></td>
-                      <td ng-hide="edit && indexProduct == $index">{{producto.precio | currency:'/s '}}</td>
-<td ng-if="edit && indexProduct == $index"><input type="text" placeholder="{{producto.precio}} /s" ng-model="new.precio"></td>
-
-                      <td ng-if="!edit" align="center">
-                      <a href="" data-toggle="tooltip" data-original-title="Modificar Productos" ng-click="EditarProducto(producto.id_producto, $index)" class="glyphicon glyphicon-edit"></a>&nbsp;&nbsp; 
-                      <a href="" data-toggle="tooltip" data-original-title="Eliminar de forma permanentemente este Productos"   ng-click="EliminarProducto(producto.id_producto)" class="glyphicon glyphicon-trash"></a>
-                      <a ng-if="edit"  href=""  ng-click="EditarProducto(producto.id_producto, $index)" class="glyphicon glyphicon-edit"></a>
-                      </td>
-
-                      <td ng-if="edit" ng-show="indexProduct == $index" align="center">
-                      <a href="" class="btn btn-sm btn-info btn-flat pull-left" ng-click="ActualizarProducto(producto,new)">Guardar</a>
-                     
-                    </tr>
-
-                  </tbody>
                   </table>
 
 

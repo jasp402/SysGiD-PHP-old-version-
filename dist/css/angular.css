@@ -145,3 +145,6 @@
     vertical-align: bottom;
   }
 }
+.hidden{
+  visibility: hidden!important;
+}

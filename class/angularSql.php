@@ -1,7 +1,7 @@
 <?php
 session_start(); 
 error_reporting (0);
-require 'sql.php';
+require 'database.local.php';
 
 
 if(isset($request->inciarSesion)){ 
@@ -69,6 +69,7 @@ if(isset($request->ActulizarUsuarioSQL)){
 //Registrar Empresas de Transporte (TablaSQL: empresa_transporte)
 if(isset($request->RegEmpresaTransporte)){
     $ET = $request->RegEmpresaTransporte;
+    echo $ET;
    RegEmpresaTransporte($ET);
 }
 
@@ -138,9 +139,11 @@ if(isset($request->listarCAT)){
 if(isset($request->listarProductos)){
    listarProductos();
 }
+//Dirección (Provincia, Distritos y Departamentos) -  Venezuela
+if(isset($request->listarEstado)){listarEstado();}
 
 
-//Dirección (Provincia, Distritos y Departamentos)
+//Dirección (Provincia, Distritos y Departamentos) - Perú
 if(isset($request->listarDepartamentos)){listarDepartamentos();}
 if(isset($request->listarProvincias)){$id = $request->listarProvincias;   listarProvincias($id);}
 if(isset($request->listarDistritos)){$id =  $request->listarDistritos;    listarDistritos($id);}
@@ -318,46 +321,6 @@ function cargarUsuarioID($id){
  }
 
 
-
- function RegEmpresaTransporte($ET){
-$sql="INSERT INTO `transporte_empresas`(`RUC`, `razonsocial`, `direccion`, `distrito`, `telefono`, `correo`, `representante`, `lugar_despacho`, `estatus`) VALUES 
-('$ET->ET_RUC',
- '$ET->ET_razonsocial',
- '$ET->ET_direccion',
- '$ET->ET_distrito',
- '$ET->ET_telefono',
- '$ET->ET_correo',
- '$ET->ET_representante',
- '$ET->ET_lugar_despacho',
- 'a')";
- InsertSQL($sql);
- }
-
-function listarEmpresaTransporte(){
-  $sql='SELECT * FROM `transporte_empresas`';
-  SelectSQL($sql);
-}
-
-
-function RegTransporte($T){
-$sql="INSERT INTO `transporte_transportistas`(`nombre`, `apellidos`, `telefono`, `direccion`, `marca`, `numero_placa`, `licencia_conducir`, `idempresa_transporte`) VALUES
-     ('$T->T_nombre',
-      '$T->T_apellidos',
-      '$T->T_telefono',
-      '$T->T_direccion',
-      '$T->T_marca',
-      '$T->T_numero_placa',
-      '$T->T_licencia_conducir',
-      '$T->T_idempresa_transporte')";
- InsertSQL($sql);
-}
-
-function listarTransporte(){
-  $sql='SELECT * FROM `transporte_transportistas` as tt , `transporte_empresas` as te WHERE te.idempresa_transporte = tt.idempresa_transporte';
-  SelectSQL($sql);
-}
-
-
 function RegInvCategoria($Cat){
   $sql="INSERT INTO `producto_categoria`(`nombre`, `descripcion`) VALUES ('$Cat->cat_nombre','$Cat->cat_descripcion')";
   InsertSQL($sql);
@@ -409,22 +372,24 @@ function listarProductos(){
   $sql="SELECT * FROM `producto` as p, producto_categoria as c, producto_tipo as t WHERE p.idtipo_producto = t.idtipo_producto and p.idcategoria = c.idcategoria order by `id_producto`";
   SelectSQL($sql);
 }
-
-
-
+//Valido Solo para Venezuela
+function listarEstado(){     
+  $sql="SELECT nombre_estado FROM `ub_estados`;";
+SelectSQL($sql);
+}
+//Valido solo para PERU
 function listarDepartamentos(){ 
   $sql="SELECT * FROM `ub_departamentos` order by `departamento`";  
   SelectSQL($sql);
-}
+};
 function listarProvincias($id){    
   $sql="SELECT * FROM `ub_provincias` WHERE ubdepartamento_idDepa = '$id' order by `provincia`";     
   SelectSQL($sql);
-}
+};
 function listarDistritos($id){     
   $sql="SELECT * FROM `ub_distritos` WHERE idProv = '$id' order by `distrito`";      
 SelectSQL($sql);
-}
-
+};
 
 
 function RegCliente($cliente){

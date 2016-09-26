@@ -21,38 +21,38 @@
             </div>
           </form>
 
- <ul class="sidebar-menu">
-  <li class="header">MENU DE FUNCIONES</li>
-  <li 
-  class="treeview" ng-repeat="(key, value) in public.SubModulo | groupBy: 'id_modulo'"
-  ng-class="{'active treeview':public.ngMenu.titulo==value[0].titulo}" 
-  ng-click="ClicMenu(value[0].titulo,value[0].href_modulo)"
-  >
+            <ul class="sidebar-menu">
+                <li class="header">MENU DE FUNCIONES</li>
+                <li class="treeview"
+                    ng-repeat="(key, value) in public.SubModulo | groupBy: 'orden'"
+                    ng-class="{'active treeview':public.ngMenu.titulo==value[0].titulo}"
+                    ng-click="ClicMenu(value[0].titulo,value[0].href_modulo)">
 
-                <a ng-if="value[0].titulo_submodulo!=null" class="active treeview" href=""> <!---->
-                  <i class="{{value[0].class_icono}}"></i> <span id='{{menu.titulo}}'>{{value[0].length}} {{value[0].titulo}}</span>
-                   <i class="fa fa-angle-left pull-right"></i> 
-                </a>
-              
-                <a ng-if="value[0].titulo_submodulo==null" class="active treeview" href="{{value[0].href_modulo}}"> <!---->
-                  <i class="{{value[0].class_icono}}"></i> <span id='{{menu.titulo}}'>{{value[0].length}} {{value[0].titulo}}</span>
-                </a>
-
-                <ul class="treeview-menu" ng-if="value[0].titulo_submodulo!=null">
-                    
-                    <li ng-repeat="submenu in value">
-
-                    <a href="{{submenu.href_modulo}}" ng-click="cambiarVista(submenu.href_submodulo);ClicMenu(submenu.titulo,menu.href_modulo);ActClass(submenu.titulo)">
-
-                    <i  ng-class="{'fa fa-circle-o text-yellow':public.ngVista==submenu.href_submodulo, 'fa fa-circle-o text-aqua':public.ngVista!=submenu.href_submodulo}"></i> {{submenu.titulo_submodulo}} 
-                    
+                    <a ng-if="value[0].titulo_submodulo!=null" class="active treeview" href=""> <!---->
+                        <i class="{{value[0].class_icono}}"></i> <span id='{{menu.titulo}}'>{{value[0].length}} {{value[0].titulo}}</span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    
-                    </li>
 
-                </ul>
-  </li>
-</ul>
+                    <a ng-if="value[0].titulo_submodulo==null" class="active treeview" href="{{value[0].href_modulo}}"> <!---->
+                        <i class="{{value[0].class_icono}}"></i> <span id='{{menu.titulo}}'>{{value[0].length}} {{value[0].titulo}}</span>
+                    </a>
+
+                    <ul class="treeview-menu" ng-if="value[0].titulo_submodulo!=null">
+
+                        <li ng-repeat="submenu in value">
+
+                            <a href="{{submenu.href_modulo}}" ng-click="cambiarVista(submenu.href_submodulo);ClicMenu(submenu.titulo,menu.href_modulo);ActClass(submenu.titulo)">
+
+                                <i  ng-class="{'fa fa-circle-o text-yellow':public.ngVista==submenu.href_submodulo, 'fa fa-circle-o text-aqua':public.ngVista!=submenu.href_submodulo}"></i> {{submenu.titulo_submodulo}}
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less 
           <ul class="sidebar-menu">

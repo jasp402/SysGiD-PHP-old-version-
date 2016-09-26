@@ -1,18 +1,88 @@
-var app  = angular.module('app', ["ngRoute","ui.bootstrap","countTo","bootstrap.fileField","chart.js", "hSweetAlert", "angular.filter"])
+var app = angular
+.module('app', ["ngRoute","ui.bootstrap","countTo","bootstrap.fileField","chart.js", "hSweetAlert", "angular.filter"])
+//.run(function(){FastClick.attach(document.body);})
 
-.run(function(){FastClick.attach(document.body);})
+.factory('SQL', function ($http, $q) {
+    //Global var
+    var Query;
+    var Value;
+    var strSQL;
+    return{
+        INSERT:INSERT,
+        SELECT:SELECT,
+        UPDATE:UPDATE,
+        DELETE:DELETE
+    };
+    function INSERT(table, fdata) {
+        Query = 'INSERT INTO '+table+'(';
+        Value = 'VALUE(';
+    angular.forEach(fdata,function (value, key) {
+        if(value!=''){
+            Query = Query+"`"+key+"`, ";
+            Value = Value+"'"+value+"',";
+        }
 
+    });
+    Query = Query+'`estatus`) ';
+    Value = Value+"'a');";
+    strSQL = Query+Value;
+        console.log(strSQL);
+// ---- $http promise ----
+        var defered = $q.defer();
+        var promise = defered.promise;
+        $http.post("class/angularSql.php", {ExecutetSQL:strSQL})
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
+        return promise;
+    }
+    function SELECT(field, table, where) {
+        Value = '';
+        Query = "SELECT "+field+" FROM "+table+ "";
+        if(where){
+            Query = Query+' WHERE ';
+        }
+        if(where.length == 1){
+            angular.forEach(where[0],function (value, key) {
+                Value = key+'="'+value+'";';
+            });
+            strSQL = Query+Value;
+        }
 
+        if(where.length > 1){
+            angular.forEach(where,function (value, key) {
+                Value = Value+key+'="'+value+'" AND ';
+            });
+            strSQL = Query+Value;
 
-
-
-
-
-
+        }
+// ---- $http promise ----
+        console.log(strSQL);
+        var defered = $q.defer();
+        var promise = defered.promise;
+        $http.post("class/angularSql.php", {SelectSQL:strSQL})
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
+        return promise;
+    }
+    function UPDATE(table, fdata) {
+        console.log(fdata);
+    }
+    function DELETE(table, fdata) {
+        console.log(fdata);
+    }
+})
 
 .factory('Factory', function($http, $q){
 return {
-        getAll: getAll //inicial mente para recibir... Veamos que mas se puede hacer
+        getAll: getAll, //inicial mente para recibir... Veamos que mas se puede hacer
         }
 // parametros: |php|query|sql|
 function getAll(query) { 
@@ -30,9 +100,6 @@ function getAll(query) {
         return promise;
     }
 })
-
-
-
 
 .service('query', function(){
   //S = SELECT 
@@ -66,11 +133,10 @@ function getAll(query) {
 
 
 
-
 //-----------------------------------------------------------------------------CONTROL PRINCIPAL
 /* 
 ControlPrincipal: 
-Controla todo que pasa en el index.php sirve para cuando se refresca la pagina 
+Controla toda que pasa en el index.php sirve para cuando se refresca la pagina
 no se pierda la sesion. porque verifica la Variable de sesion y deja al usuario donde estaba.
 */
 .controller('ControlPrincipal', function(public,Factory,query,$scope,$timeout,$http){
@@ -133,14 +199,20 @@ $scope.listarPedidos = function(){
 $scope.factPagas = function(){
   $scope.sql="SELECT * FROM `facturas` WHERE `estatus_fact`='Pagado'";
   $http.post("class/angularSql.php", {NumRowsSQL:$scope.sql}).success(function(data){ $scope.FactPagas = data; });
-}
+};
 
 
 $scope.listarRemision = function(){
   $scope.sql="SELECT * FROM remision AS r, pedidos AS ped, transporte_empresas AS te, transporte_transportistas AS t, ventas_clientes AS c WHERE r.nro_remision !=  '' AND r.id_pedido = ped.id_pedido AND ped.id_cliente = c.id_cliente AND r.idtransportista = t.idtransportista AND t.idempresa_transporte = te.idempresa_transporte";
   $http.post("class/angularSql.php", {SelectSQL:$scope.sql}).success(function(data){$scope.ListarRemision = data; $scope.cantRem = data[0].id_remision });
 
-}
+};
+
+$scope.ListarEstados = function () {
+        $http.post("class/angularSql.php", {listarEstado :''}).success(function(data){$scope.listarEstado = data});
+};
+
+
 })
 
 
@@ -325,7 +397,7 @@ if(idUSer || ngUser){
  }, 1000);
 $scope.sql="SELECT * FROM config_modulos as m, config_submodulos as sm, permisos as p WHERE p.`id_modulo` = m.`id_modulo` AND m.`estatus`='a' AND p.id_usuario ="+id+" AND m.id_modulo = sm.id_modulo ORDER BY `m`.`id_modulo` ASC";
        $http.post("class/angularSql.php", {SelectSQL:$scope.sql}).success(function(data){$scope.public.SubModulo=data});
- console.log($scope.sql)
+ //console.log($scope.sql)
  }
 }
 
@@ -713,6 +785,8 @@ Factory.getAll(query.S002,'SelectSQL').then(function(data) {$scope.public.DataSy
     }
 }
 
+
+
 })
 
 
@@ -856,13 +930,22 @@ $scope.openscreen = function(value){
                    templateUrl:'pages/module/remision/guia_remision.php',
                    controller: 'ngControlRemision'
     })
+    .when('/coleccion_bicentenaria',{
+                   templateUrl:'pages/module/_coleccion_bicentenaria/recepcion.html',
+                   controller: 'ngCtrl_Coleccion_Bicentenaria'
+    })
+    .when('/soporte',{
+                   templateUrl:'pages/UI/icons.html',
+                   controller: 'ngCtrl_Coleccion_Bicentenaria'
+    })
+
     .otherwise({
      // template: '<h1>AQUI NO HAY UN COÑO</h1>',
           redirectTo: '/',
           controller: 'ngControlLogin'
         });
     //$locationProvider.html5Mode(true);
-  });
+  })
 
 
 
