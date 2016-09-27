@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="25697573-beff-446e-bea6-a6b154c4f046" name="Apache_wamp" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="C:\wamp\bin\apache\apache2.4.9\htdocs" accessType="MOUNT" />
+      </webServer>
+      <webServer id="cf587a4a-d01c-4f53-b37b-bbacfddf723f" name="Server SysGiD - Uniprint" url="http://sysgid.com">
+        <fileTransfer host="sysgid.com" port="21" password="dfdedfdddfe6dfd1dfdfdfdedff7df91dfcfdfeadf9ddfe9" username="uniprint@sysgid.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,12 @@
+SELECT * FROM usuarios WHERE login = '$usuario' AND password ='$contrasena' AND estatus != 'e'";
+SELECT * FROM usuarios WHERE id_usuario = '$id' AND estatus != 'e'
+SELECT * FROM config_modulos AS m, permisos AS p WHERE p.id_usuario = '$idUsuario' AND p.id_modulo = m.id_modulo and p.estatus='true'  ORDER BY m.orden ASC
+SELECT id_usuario from usuarios order by id_usuario desc limit 1
+SELECT * FROM config_modulos WHERE estatus='a'
+SELECT * FROM usuarios WHERE estatus = '$status'
+SELECT * FROM config_modulos AS m, permisos AS p WHERE p.id_usuario = '$idUsuario' AND p.id_modulo = m.id_modulo ORDER BY m.orden ASC
+SELECT estatus FROM usuarios WHERE id_usuario= '$idUsr'
+SELECT * FROM `transporte_empresas`
+SELECT * FROM `transporte_transportistas` as tt , `transporte_empresas` as te WHERE te.idempresa_transporte = tt.idempresa_transporte'
+SELECT * FROM `producto_categoria`
+SELECT * FROM `producto_tipo`
