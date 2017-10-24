@@ -1,116 +1,126 @@
 var app = angular
-.module('app', ["ngRoute","ui.bootstrap","countTo","bootstrap.fileField","chart.js", "hSweetAlert", "angular.filter"])
-//.run(function(){FastClick.attach(document.body);})
+.module('app', ["ngRoute","ngResource","ui.bootstrap","countTo","bootstrap.fileField","chart.js", "hSweetAlert", "angular.filter"])
 
-.factory('SQL', function ($http, $q) {
-    //Global var
-    var Query;
-    var Value;
-    var strSQL;
-    return{
-        INSERT:INSERT,
-        SELECT:SELECT,
-        UPDATE:UPDATE,
-        DELETE:DELETE
-    };
-    function INSERT(table, fdata) {
-        Query = 'INSERT INTO '+table+'(';
-        Value = 'VALUE(';
-    angular.forEach(fdata,function (value, key) {
-        if(value!=''){
-            Query = Query+"`"+key+"`, ";
-            Value = Value+"'"+value+"',";
-        }
+    .factory("API", function ($resource) {
+        return $resource("http://localhost/RestServer/sysgid/v1/:instance", {}, {
+            query: {method: "POST", isArray: false}
+        });
+    })
 
-    });
-    Query = Query+'`estatus`) ';
-    Value = Value+"'a');";
-    strSQL = Query+Value;
-        console.log(strSQL);
+    .factory('SQL', function ($http, $q) {
+        //Global var
+        var Query;
+        var Value;
+        var strSQL;
+        return {
+            INSERT: INSERT,
+            SELECT: SELECT,
+            UPDATE: UPDATE,
+            DELETE: DELETE
+        };
+
+        function INSERT(table, fdata) {
+            Query = 'INSERT INTO ' + table + '(';
+            Value = 'VALUE(';
+            angular.forEach(fdata, function (value, key) {
+                if (value != '') {
+                    Query = Query + "`" + key + "`, ";
+                    Value = Value + "'" + value + "',";
+                }
+
+            });
+            Query = Query + '`estatus`) ';
+            Value = Value + "'a');";
+            strSQL = Query + Value;
+            console.log(strSQL);
 // ---- $http promise ----
-        var defered = $q.defer();
-        var promise = defered.promise;
-        $http.post("class/angularSql.php", {ExecutetSQL:strSQL})
-            .success(function(data) {
-                defered.resolve(data);
-            })
-            .error(function(err) {
-                defered.reject(err)
-            });
-        return promise;
-    }
-    function SELECT(field, table, where) {
-        Value = '';
-        Query = "SELECT "+field+" FROM "+table+ "";
-        if(where){
-            Query = Query+' WHERE ';
-        }
-        if(where.length == 1){
-            angular.forEach(where[0],function (value, key) {
-                Value = key+'="'+value+'";';
-            });
-            strSQL = Query+Value;
+            var defered = $q.defer();
+            var promise = defered.promise;
+            $http.post("class/angularSql.php", {ExecutetSQL: strSQL})
+                .success(function (data) {
+                    defered.resolve(data);
+                })
+                .error(function (err) {
+                    defered.reject(err)
+                });
+            return promise;
         }
 
-        if(where.length > 1){
-            angular.forEach(where,function (value, key) {
-                Value = Value+key+'="'+value+'" AND ';
-            });
-            strSQL = Query+Value;
+        function SELECT(field, table, where) {
+            Value = '';
+            Query = "SELECT " + field + " FROM " + table + "";
+            if (where) {
+                Query = Query + ' WHERE ';
+            }
+            if (where.length == 1) {
+                angular.forEach(where[0], function (value, key) {
+                    Value = key + '="' + value + '";';
+                });
+                strSQL = Query + Value;
+            }
 
-        }
+            if (where.length > 1) {
+                angular.forEach(where, function (value, key) {
+                    Value = Value + key + '="' + value + '" AND ';
+                });
+                strSQL = Query + Value;
+
+            }
 // ---- $http promise ----
-        console.log(strSQL);
-        var defered = $q.defer();
-        var promise = defered.promise;
-        $http.post("class/angularSql.php", {SelectSQL:strSQL})
-            .success(function(data) {
-                defered.resolve(data);
-            })
-            .error(function(err) {
-                defered.reject(err)
-            });
-        return promise;
-    }
-    function UPDATE(table, fdata) {
-        console.log(fdata);
-    }
-    function DELETE(table, fdata) {
-        console.log(fdata);
-    }
-})
-
-.factory('Factory', function($http, $q){
-return {
-        getAll: getAll, //inicial mente para recibir... Veamos que mas se puede hacer
+            console.log(strSQL);
+            var defered = $q.defer();
+            var promise = defered.promise;
+            $http.post("class/angularSql.php", {SelectSQL: strSQL})
+                .success(function (data) {
+                    defered.resolve(data);
+                })
+                .error(function (err) {
+                    defered.reject(err)
+                });
+            return promise;
         }
+
+        function UPDATE(table, fdata) {
+            console.log(fdata);
+        }
+
+        function DELETE(table, fdata) {
+            console.log(fdata);
+        }
+    })
+
+    .factory('Factory', function ($http, $q) {
+        return {
+            getAll: getAll, //inicial mente para recibir... Veamos que mas se puede hacer
+        }
+
 // parametros: |php|query|sql|
-function getAll(query) { 
-        var defered = $q.defer();
-        var promise = defered.promise;
+        function getAll(query) {
+            var defered = $q.defer();
+            var promise = defered.promise;
 
-            $http.post("class/angularSql.php", {SelectSQL:query})
-            .success(function(data) {
-             defered.resolve(data);
-            })
-            .error(function(err) {
-                defered.reject(err)
-            });
+            $http.post("class/angularSql.php", {SelectSQL: query})
+                .success(function (data) {
+                    defered.resolve(data);
+                })
+                .error(function (err) {
+                    defered.reject(err)
+                });
 
-        return promise;
-    }
-})
+            return promise;
+        }
+    })
 
-.service('query', function(){
-  //S = SELECT 
-  //I = INSERT
-  //U = UPDATE
-  //D = DELETE
- return{
-  S001:'SELECT * FROM `empresa`',
-  S002:'SELECT * FROM `config_sysgid`'
- } 
-})
+    .service('query', function () {
+        //S = SELECT
+        //I = INSERT
+        //U = UPDATE
+        //D = DELETE
+        return {
+            S001: 'SELECT * FROM `empresa`',
+            S002: 'SELECT * FROM `config_sysgid`'
+        }
+    })
 
 
 
@@ -139,28 +149,43 @@ ControlPrincipal:
 Controla toda que pasa en el index.php sirve para cuando se refresca la pagina
 no se pierda la sesion. porque verifica la Variable de sesion y deja al usuario donde estaba.
 */
-.controller('ControlPrincipal', function(public,Factory,query,$scope,$timeout,$http){
-console.log(public)
+    .controller('ControlPrincipal', function (public, Factory, query, $scope, $timeout, $http, API) {
 
-   $timeout(function(){
-            $scope.progressValue = 100;  
-            }, 300);
+        $scope.public = public;
+
+        $scope.public.ngClassBody = 'hold-transition login-page';
+
+                API.query({ instance: 'users' },{
+                    user: 'jasp402@gmail.com',
+                    password: '1234'
+                }, function(data) {
+                    console.log(data.id); //print data
+                    //$scope.post = data;
+
+                });
+/*
+                $http.post("http://localhost/RestServer/sysgid/v1/load/testing", {
+                    user: 'jasp402@gmail.com',
+                    password: '1234'
+                }).success(function (data) {
+                    console.log(data);
+                });
+        */
+        Factory.getAll(query.S001, 'SelectSQL').then(function (data) {
+            console.log(data); //print data
+            public.DataCompany = data[0];
+        }).catch(function (err) {
+        });
+        Factory.getAll(query.S002, 'SelectSQL').then(function (data) {
+            public.DataSystem = data[0];
+        }).catch(function (err) {
+        });
 
 
-$scope.public = public;
-
-  $scope.public.ngClassBody = 'hold-transition login-page';
-
-  $scope.ValidarIdUsuario = function(valueID){public.idUSer =  valueID}
-
-  Factory.getAll(query.S001,'SelectSQL').then(function(data) {public.DataCompany= data[0]; }).catch(function(err) {  });
-  Factory.getAll(query.S002,'SelectSQL').then(function(data) {public.DataSystem = data[0]; }).catch(function(err) {  });
-
-
-$scope.inventario =function(value1,value2){
-  if(value1===value2) alert('No hay mas productos disponibles')
-  return   value1; 
-}
+        $scope.inventario = function (value1, value2) {
+            if (value1 === value2) alert('No hay mas productos disponibles')
+            return value1;
+        }
 
 
 

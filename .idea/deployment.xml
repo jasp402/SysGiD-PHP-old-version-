@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Apache_wamp" uploadOnCheckin="cf587a4a-d01c-4f53-b37b-bbacfddf723f">
+  <component name="PublishConfigData" serverName="Apache_wamp">
     <serverData>
       <paths name="Apache_wamp">
         <serverdata>
@@ -17,6 +17,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="Server SysGiD - Uniprint" />
   </component>
 </project>

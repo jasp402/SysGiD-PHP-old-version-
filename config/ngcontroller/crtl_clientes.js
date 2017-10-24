@@ -24,12 +24,14 @@ app.controller('ngControlClientes', function(public,query,Factory, SQLGlobal, $s
     if(fdata.provincia){fdata.provincia = fdata.provincia.provincia}
     if(fdata.distrito) {fdata.distrito  = fdata.distrito.distrito}
     $http.post("class/angularSql.php", {RegCliente:fdata}).success(function(data){$scope.success = true; $scope.fdata = '';});
-    $timeout(function(){ $scope.success = false }, 5000)
+    
+      $timeout(function(){ $scope.success = false }, 5000)
     
     $scope.alert.success('¡Registro exitoso!','Visualice su registro en listar Usuarios'); 
 
     $scope.fdata = '';
 }
+
 
 
 
